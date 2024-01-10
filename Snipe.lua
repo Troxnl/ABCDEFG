@@ -12,9 +12,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-task.wait(20) -- i hate library loading
-
-setfpscap(10)
+task.wait(15)
 game.Players.LocalPlayer.PlayerScripts.Scripts.Core["Idle Tracking"].Enabled = false
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
@@ -187,14 +185,16 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
             end
         end
     end)
-    
-    local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
-    repeat task.wait() until buytimestamp < workspace:GetServerTimeNow() - Players.LocalPlayer:GetNetworkPing()
+
+local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
+    if buytimestamp > listTimestamp then
+	task.wait(buytimestamp - workspace:GetServerTimeNow() - Players.LocalPlayer:GetNetworkPing())
+    end
     local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
     processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
 end
 
-    local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, class, failMessage, snipeNormal)
+local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, class, failMessage, snipeNormal)
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
     local snipeMessage ="||".. Players.LocalPlayer.Name .. "||"
     local weburl, webContent, webcolor
@@ -262,7 +262,6 @@ end
                         ['name'] = "__PetID:__",
                         ['value'] = "||"..tostring(uid).."||",
                     },
-		    
 		    {
                         ['name'] = "🌐:",
                         ['value'] = math.round(Players.LocalPlayer:GetNetworkPing() * 2000) .. "ms",
@@ -291,7 +290,6 @@ end
         })
     end
 end
-
 
 local function jumpToServer() 
     local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true" 
