@@ -208,19 +208,19 @@ if string.find(item, "Huge") and unitGems <= 2000000 then
                     return
     
                     -- Items
-                elseif item == "Crystal Key" and unitGems <= 10000 then
+                elseif item == "Crystal Key" and unitGems <= 30000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
                 elseif item == "Crystal Key Lower Half" and unitGems <= 5000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
-                elseif item == "Crystal Key Upper Half" and unitGems <= 5000 then
+                elseif item == "Crystal Key Upper Half" and unitGems <= 20000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
-                elseif item == "Spinny Wheel Ticket" and unitGems <= 5000 then
+                elseif item == "Spinny Wheel Ticket" and unitGems <= 10000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
-                elseif item == "Booth Slot Voucher" and unitGems <= 25000 then
+                elseif item == "Booth Slot Voucher" and unitGems <= 50000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
                 elseif string.find(item, "Charm") and unitGems <= 100000 and item ~= "Agility Charm" and item ~= "Coin Charm" and item ~= "Bonus Charm" and item ~= "Charm Stone" then
