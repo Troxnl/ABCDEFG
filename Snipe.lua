@@ -78,7 +78,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
             {
 		["author"] = {
 			["name"] = "WOAH !",
-			["icon_url"] = "https://i.imgur.com/aECHhQG.png",
+			["icon_url"] = "https://discord.com/channels/1138790324567818272/1138842907076468756/1195078769610866768",
 		},
                 ['title'] = snipeMessage,
                 ["color"] = webcolor,
@@ -114,7 +114,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                     }
                 },
 		["footer"] = {
-                        ["icon_url"] = "https://i.imgur.com/aECHhQG.png", -- optional
+                        ["icon_url"] = "https://discord.com/channels/1138790324567818272/1138842907076468756/1195078769610866768", -- optional
                         ["text"] = "Woah !"
 		}
             },
