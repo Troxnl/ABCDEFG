@@ -97,11 +97,11 @@ local message1 = {
                 },
                 {
                     ['name'] = "📦AMOUNT:",
-                    ['value'] = "||"..tostring(boughtFrom).."||",
+                    ['value'] = amount .. "x",
                 },
                 {
                     ['name'] = "🤡 BOUGHT FROM:",
-                    ['value'] = amount .. "x",
+                    ['value'] = "||"..tostring(boughtFrom).."||",
                 },  
                 {
                     ['name'] = "__*PETID:*__",
@@ -121,7 +121,7 @@ local message1 = {
                 },    
 	        {
                     ['name'] = "🎯__*SNIPER INFO*__🎯",
-                    ['value'] = "||"..tostring(uid).."||",
+                    ['value'] = "\n\n",
                 },
                 {
                     ['name'] = "⌛STATUS:",
