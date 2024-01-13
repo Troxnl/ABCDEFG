@@ -1,12 +1,3 @@
---[[
-Credits List
-ethereum: creating the base sniper
-chocolog: providing type.huge
-Edmond: offered tips for optimization
-
-it is very recommended to fork this and made your own config
-]]--
-
 local osclock = os.clock()
 if not game:IsLoaded() then
     game.Loaded:Wait()
@@ -78,18 +69,18 @@ local message1 = {
         {
             ["author"] = {
                 ["name"] = "🌟2FA's Boothsniper🌟",
-                ["icon_url"] = "https://i.imgur.com/dvKh28w.jpg",
+                ["icon_url"] = "https://i.imgur.com/krUkUhm.png",
             },
             ['title'] = snipeMessage,
             ["color"] = webcolor,
             ["timestamp"] = DateTime.now():ToIsoDate(),
             ["thumbnail"] = {
-            ["url"] = "https://i.imgur.com/mlcBFrM.png"
+            ["url"] = "https://i.imgur.com/krUkUhm.png"
         },
             ['fields'] = {
 		{
                     ['name'] = "🛒__*PURCHASE INFO:*__🛒",
-                    ['value'] = "\n\n",
+                    ['value'] = "\n",
                 },
                 {
                     ['name'] = "🤑PRICE:",
@@ -109,7 +100,7 @@ local message1 = {
                 },
                 {
                     ['name'] = "👥__*USER INFO:*__👥",
-                    ['value'] = "\n\n",
+                    ['value'] = "\n",
                 },
 	        {
                     ['name'] = "👤USER:",
@@ -121,7 +112,7 @@ local message1 = {
                 },    
 	        {
                     ['name'] = "🎯__*SNIPER INFO*__🎯",
-                    ['value'] = "\n\n",
+                    ['value'] = "\n",
                 },
                 {
                     ['name'] = "⌛STATUS:",
@@ -133,8 +124,8 @@ local message1 = {
                 }
             },
             ["footer"] = {
-                ["icon_url"] = "https://i.imgur.com/dvKh28w.jpg", -- optional
-                ["text"] = "Woah !"
+                ["icon_url"] = "https://i.imgur.com/krUkUhm.png", -- optional
+                ["text"] = "BIG GAMES©️"
 		}
             },
         }
@@ -158,7 +149,7 @@ end
 
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
     signal = game:GetService("RunService").Heartbeat:Connect(function()
-	if buytimestamp < workspace:GetServerTimeNow() - Players.LocalPlayer:GetNetworkPing() then
+	if buytimestamp < workspace:GetServerTimeNow() then
 	    signal:Disconnect()
 	    signal = nil
         end
