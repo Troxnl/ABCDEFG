@@ -77,7 +77,7 @@ local message1 = {
     ['embeds'] = {
         {
             ["author"] = {
-                ["name"] = "WOAH !",
+                ["name"] = "🌟2FA's Boothsniper🌟",
                 ["icon_url"] = "https://i.imgur.com/dvKh28w.jpg",
             },
             ['title'] = snipeMessage,
@@ -85,7 +85,7 @@ local message1 = {
             ["timestamp"] = DateTime.now():ToIsoDate(),
             ['fields'] = {
 		{
-                    ['name'] = "🛒__PURCHASE INFO:__🛒",
+                    ['name'] = "🛒__*PURCHASE INFO:*__🛒",
                     ['value'] = gems .. " 💎",
                 },
                 {
@@ -99,17 +99,25 @@ local message1 = {
                 {
                     ['name'] = "🤡 BOUGHT FROM:",
                     ['value'] = amount .. "x",
+                },  
+                {
+                    ['name'] = "__*PETID:*__",
+                    ['value'] = "||"..tostring(uid).."||",
+                },
+                {
+                    ['name'] = "👥__*USER INFO:*__👥",
+                    ['value'] = "\n\n",
+                },
+	        {
+                    ['name'] = "👤USER:",
+                    ['value'] = "||"..game.Players.LocalPlayer.Name.."||",
                 },
                 {
                     ['name'] = "💎GEM'S LEFT:",
-                    ['value'] = gemamount .. " 💎",
-                },      
-                {
-                    ['name'] = "__PetID:__",
-                    ['value'] = "||"..tostring(uid).."||",
-                },
-	                {
-                    ['name'] = "🎯__SNIPER INFO__🎯",
+                    ['value'] = string.format("%s", tostring(gemamount):reverse():gsub("%d%d%d", "%1,"):reverse()),
+                },    
+	        {
+                    ['name'] = "🎯__*SNIPER INFO*__🎯",
                     ['value'] = "||"..tostring(uid).."||",
                 },
                 {
@@ -124,13 +132,10 @@ local message1 = {
             ["footer"] = {
                 ["icon_url"] = "https://i.imgur.com/dvKh28w.jpg", -- optional
                 ["text"] = "Woah !"
+		}
             },
-            ["thumbnail"] = {
-                ["url"] = "https://i.imgur.com/mlcBFrM.png"
-            }
         }
     }
-}
 
     local jsonMessage = http:JSONEncode(message1)
     local success, webMessage = pcall(function()
