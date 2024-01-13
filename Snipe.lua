@@ -72,54 +72,65 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     
     snipeMessage = snipeMessage .. item .. "**"
     
-    local message1 = {
-        ['content'] = webContent,
-        ['embeds'] = {
-            {
-		["author"] = {
-			["name"] = "WOAH !",
-			["icon_url"] = "https://discord.com/channels/1138790324567818272/1138842907076468756/1195078769610866768",
-		},
-                ['title'] = snipeMessage,
-                ["color"] = webcolor,
-                ["timestamp"] = DateTime.now():ToIsoDate(),
-                ['fields'] = {
-                    {
-                        ['name'] = "__Price:__",
-                        ['value'] = gems .. " 💎",
-                    },
-                    {
-                        ['name'] = "__🛒:__",
-                        ['value'] = "||"..tostring(boughtFrom).."||",
-                    },
-                    {
-                        ['name'] = "__🔢:__",
-                        ['value'] = amount .. "x",
-                    },
-                    {
-                        ['name'] = "__Remaining gems:__",
-                        ['value'] = gemamount .. " 💎",
-                    },      
-                    {
-                        ['name'] = "__PetID:__",
-                        ['value'] = "||"..tostring(uid).."||",
-                    },
-		    {
-                        ['name'] = "__Status:__",
-                        ['value'] = webStatus,
-                    },
-		    {
-                        ['name'] = "__🌐:__",
-                        ['value'] = math.round(Players.LocalPlayer:GetNetworkPing() * 2000) .. "ms",
-                    }
-                },
-		["footer"] = {
-                        ["icon_url"] = "https://discord.com/channels/1138790324567818272/1138842907076468756/1195078769610866768", -- optional
-                        ["text"] = "Woah !"
-		}
+local message1 = {
+    ['content'] = webContent,
+    ['embeds'] = {
+        {
+            ["author"] = {
+                ["name"] = "WOAH !",
+                ["icon_url"] = "https://discord.com/channels/1138790324567818272/1138842907076468756/1195078769610866768",
             },
+            ['title'] = snipeMessage,
+            ["color"] = webcolor,
+            ["timestamp"] = DateTime.now():ToIsoDate(),
+            ['fields'] = {
+		{
+                    ['name'] = "🛒__PURCHASE INFO:__🛒",
+                    ['value'] = gems .. " 💎",
+                },
+                {
+                    ['name'] = "🤑PRICE:",
+                    ['value'] = gems .. " 💎",
+                },
+                {
+                    ['name'] = "📦AMOUNT:",
+                    ['value'] = "||"..tostring(boughtFrom).."||",
+                },
+                {
+                    ['name'] = "🤡 BOUGHT FROM:",
+                    ['value'] = amount .. "x",
+                },
+                {
+                    ['name'] = "💎GEM'S LEFT:",
+                    ['value'] = gemamount .. " 💎",
+                },      
+                {
+                    ['name'] = "__PetID:__",
+                    ['value'] = "||"..tostring(uid).."||",
+                },
+	                {
+                    ['name'] = "🎯__SNIPER INFO__🎯",
+                    ['value'] = "||"..tostring(uid).."||",
+                },
+                {
+                    ['name'] = "⌛STATUS:",
+                    ['value'] = webStatus,
+                },
+                {
+                    ['name'] = "🚀PING:",
+                    ['value'] = math.round(Players.LocalPlayer:GetNetworkPing() * 2000) .. "ms",
+                }
+            },
+            ["footer"] = {
+                ["icon_url"] = "https://discord.com/channels/1138790324567818272/1138842907076468756/1195078769610866768", -- optional
+                ["text"] = "Woah !"
+            },
+            ["thumbnail"] = {
+                ["url"] = "https://upload.wikimedia.org/wikipedia/commons/3/38/4-Nature-Wallpapers-2014-1_ukaavUI.jpg"
+            }
         }
     }
+}
 
     local jsonMessage = http:JSONEncode(message1)
     local success, webMessage = pcall(function()
