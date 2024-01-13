@@ -89,7 +89,7 @@ local message1 = {
             ['fields'] = {
 		{
                     ['name'] = "🛒__*PURCHASE INFO:*__🛒",
-                    ['value'] = gems .. " 💎",
+                    ['value'] = "\n\n",
                 },
                 {
                     ['name'] = "🤑PRICE:",
