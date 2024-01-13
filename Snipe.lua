@@ -83,6 +83,9 @@ local message1 = {
             ['title'] = snipeMessage,
             ["color"] = webcolor,
             ["timestamp"] = DateTime.now():ToIsoDate(),
+            ["thumbnail"] = {
+            ["url"] = "https://i.imgur.com/mlcBFrM.png"
+        },
             ['fields'] = {
 		{
                     ['name'] = "🛒__*PURCHASE INFO:*__🛒",
