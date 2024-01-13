@@ -78,7 +78,7 @@ local message1 = {
         {
             ["author"] = {
                 ["name"] = "WOAH !",
-                ["icon_url"] = "https://discord.com/channels/1138790324567818272/1138842907076468756/1195078769610866768",
+                ["icon_url"] = "https://i.imgur.com/dvKh28w.jpg",
             },
             ['title'] = snipeMessage,
             ["color"] = webcolor,
@@ -122,11 +122,11 @@ local message1 = {
                 }
             },
             ["footer"] = {
-                ["icon_url"] = "https://discord.com/channels/1138790324567818272/1138842907076468756/1195078769610866768", -- optional
+                ["icon_url"] = "https://i.imgur.com/dvKh28w.jpg", -- optional
                 ["text"] = "Woah !"
             },
             ["thumbnail"] = {
-                ["url"] = "https://upload.wikimedia.org/wikipedia/commons/3/38/4-Nature-Wallpapers-2014-1_ukaavUI.jpg"
+                ["url"] = "https://i.imgur.com/mlcBFrM.png"
             }
         }
     }
