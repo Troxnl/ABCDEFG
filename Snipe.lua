@@ -69,13 +69,13 @@ local message1 = {
         {
             ["author"] = {
                 ["name"] = "🌟2FA's Boothsniper🌟",
-                ["icon_url"] = "https://i.imgur.com/krUkUhm.png",
+                ["icon_url"] = "https://i.imgur.com/K5dxOcu.jpg",
             },
             ['title'] = snipeMessage,
             ["color"] = webcolor,
             ["timestamp"] = DateTime.now():ToIsoDate(),
             ["thumbnail"] = {
-            ["url"] = "https://i.imgur.com/krUkUhm.png"
+            ["url"] = "https://i.imgur.com/qgTTLSX.png"
         },
             ['fields'] = {
 		{
@@ -124,8 +124,8 @@ local message1 = {
                 }
             },
             ["footer"] = {
-                ["icon_url"] = "https://i.imgur.com/krUkUhm.png", -- optional
-                ["text"] = "BIG GAMES©️"
+                ["icon_url"] = "https://i.imgur.com/K5dxOcu.jpg", -- optional
+                ["text"] = "©️BIG GAMES"
 		}
             },
         }
