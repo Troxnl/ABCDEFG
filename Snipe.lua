@@ -188,13 +188,13 @@ if string.find(item, "Huge") and unitGems <= 2000000 then
                         return
                 elseif class == "Pet" then
                     local type = Library.Directory.Pets[item]
-                    if type.exclusiveLevel and unitGems <= 50000 and item ~= "Banana" and item ~= "Coin" then
+                    if type.exclusiveLevel and unitGems <= 90000 and item ~= "Banana" and item ~= "Coin" then
                         coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                         return
                     elseif type.titanic and unitGems <= 10000000 then
                         coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                         return
-                    elseif type.huge and unitGems <= 3000000 then
+                    elseif type.huge and unitGems <= 5000000 then
                         coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                         return
                     end
@@ -214,7 +214,7 @@ if string.find(item, "Huge") and unitGems <= 2000000 then
                 elseif item == "Crystal Key Lower Half" and unitGems <= 5000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
-                elseif item == "Crystal Key Upper Half" and unitGems <= 20000 then
+                elseif item == "Crystal Key Upper Half" and unitGems <= 25000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
                 elseif item == "Spinny Wheel Ticket" and unitGems <= 10000 then
@@ -360,7 +360,7 @@ end
 Players.PlayerRemoving:Connect(function(player)
     getPlayers = Players:GetPlayers()
     PlayerInServer = #getPlayers
-    if PlayerInServer < 30 then
+    if PlayerInServer < 20 then
         while task.wait(10) do
 	    jumpToServer()
 	end
