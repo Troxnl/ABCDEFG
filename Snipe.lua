@@ -148,16 +148,49 @@ local message1 = {
 end
 
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
-    signal = game:GetService("RunService").Heartbeat:Connect(function()
-	if buytimestamp < workspace:GetServerTimeNow() then
-	    signal:Disconnect()
-	    signal = nil
+    local MAX_ATTEMPTS = 3 -- Maximum number of purchase attempts
+    local attempts = 0
+    local success = false
+
+    repeat
+        attempts = attempts + 1
+
+        signal = game:GetService("RunService").Heartbeat:Connect(function()
+            if buytimestamp < workspace:GetServerTimeNow() then
+                signal:Disconnect()
+                signal = nil
+            end
+        end)
+
+        repeat
+            task.wait()
+        until signal == nil
+
+        local boughtPet, boughtMessage = rs.Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+
+        if boughtPet then
+            success = true
+        else
+            warn("Purchase failed. Retrying...")
+
+            -- Check if the error message indicates a temporary issue
+            if string.find(boughtMessage:lower(), "cannot buy that yet") then
+                task.wait(2) -- Wait for a short time before retrying
+            else
+                warn("Non-retryable error: " .. boughtMessage)
+                break
+            end
         end
-    end)
-    repeat task.wait() until signal == nil
-    local boughtPet, boughtMessage = rs.Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-    processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
+    until success or attempts >= MAX_ATTEMPTS
+
+    if success then
+        processListingInfo(uid, gems, item, version, shiny, amount, username, true, class, "Purchase successful", snipeNormal)
+    else
+        warn("Max attempts reached. Purchase failed.")
+        processListingInfo(uid, gems, item, version, shiny, amount, username, false, class, "Max attempts reached. Purchase failed.", snipeNormal)
+    end
 end
+
 
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
         if type(message) == "table" then
