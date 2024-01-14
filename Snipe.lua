@@ -175,7 +175,7 @@ local function tryPurchase(uid, gems, item, version, shiny, amount, username, cl
 
             -- Check if the error message indicates a temporary issue
             if string.find(boughtMessage:lower(), "cannot buy that yet") then
-                task.wait(2) -- Wait for a short time before retrying
+                task.wait(3.4) -- Wait for a short time before retrying
             else
                 warn("Non-retryable error: " .. boughtMessage)
                 break
