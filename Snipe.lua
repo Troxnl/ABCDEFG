@@ -216,7 +216,7 @@ if string.find(item, "Huge") and unitGems <= 2000000 then
                 elseif item == "Crystal Key" and unitGems <= 30000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
-                elseif item == "Crystal Key Lower Half" and unitGems <= 5000 then
+                elseif item == "Crystal Key Lower Half" and unitGems <= 3500 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
                 elseif item == "Crystal Key Upper Half" and unitGems <= 25000 then
@@ -292,7 +292,7 @@ if string.find(item, "Huge") and unitGems <= 2000000 then
                     elseif item == "The Cocktail" and gems <= 50000 then
                         coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                         return
-                    elseif item == "Lucky Eggs VIII" and gems <= 200000 then
+                    elseif item == "Lucky Eggs VIII" and gems <= 120000 then
                         coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                         return
                     elseif string.find(item, "Potion VIII") and price <= 30000 and item == "Diamonds Potion VI" then
