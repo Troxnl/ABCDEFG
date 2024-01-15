@@ -199,7 +199,7 @@ if string.find(item, "Huge") and unitGems <= 2000000 then
                     elseif type.titanic and unitGems <= 10000000 then
                         coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                         return
-                    elseif type.huge and unitGems <= 4500000 then
+                    elseif type.huge and unitGems <= 5000000 then
                         coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                         return
                     end
