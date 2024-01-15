@@ -30,33 +30,27 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     local versionVal = { [1] = "Golden ", [2] = "Rainbow " }
     local versionStr = versionVal[version] or (version == nil and "")
     local mention = ( class == "Pet" and (Library.Directory.Pets[item].huge or Library.Directory.Pets[item].titanic)) and "<@" .. userid .. ">" or ""
-    
+	
     if boughtStatus then
-        webcolor = tonumber(0x00ff00)
+	webcolor = tonumber(0x00ff00)
         snipeMessage = snipeMessage .. " ✅ ".. amount .."x "
         webContent = mention
-        webStatus = "Success!"
-        
-        if (class == "Pet" and Library.Directory.Pets[item].huge) then
-            weburl = hugePetWebhook
-        else
-            weburl = webhook
-            if snipeNormal == true then
-                weburl = normalwebhook
-                snipeNormal = false
-            end
-        end
+	webStatus = "Success!"
+	weburl = webhook
+	if snipeNormal == true then
+	    weburl = normalwebhook
+	    snipeNormal = false
+	end
     else
-        webcolor = tonumber(0xff0000)
-        weburl = webhookFail
-        webStatus = failMessage
-        snipeMessage = snipeMessage .. " ⛔️ ".. amount .."x "
-        
-        if snipeNormal == true then
-            snipeNormal = false
-        end
+	webcolor = tonumber(0xff0000)
+	weburl = webhookFail
+	webStatus = failMessage
+	snipeMessage = snipeMessage .. " ⛔️ ".. amount .."x "
+	if snipeNormal == true then
+	    snipeNormal = false
+	end
     end
-    
+	
     snipeMessage = snipeMessage .. "**" .. versionStr
     
     if shiny then
@@ -64,80 +58,78 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end
     
     snipeMessage = snipeMessage .. item .. "**"
-
-    local message1 = {
-        ['content'] = webContent,
-        ['embeds'] = {
-            {
-                ["author"] = {
-                    ["name"] = "🌟2FA's Boothsniper🌟",
-                    ["icon_url"] = "https://i.imgur.com/K5dxOcu.jpg",
+    
+local message1 = {
+    ['content'] = webContent,
+    ['embeds'] = {
+        {
+            ["author"] = {
+                ["name"] = "🌟2FA's Boothsniper🌟",
+                ["icon_url"] = "https://i.imgur.com/K5dxOcu.jpg",
+            },
+            ['title'] = snipeMessage,
+            ["color"] = webcolor,
+            ["timestamp"] = DateTime.now():ToIsoDate(),
+            ["thumbnail"] = {
+            ["url"] = "https://i.imgur.com/qgTTLSX.png"
+        },
+            ['fields'] = {
+		{
+                    ['name'] = "🛒__*PURCHASE INFO:*__🛒",
+                    ['value'] = "\n",
                 },
-                ['title'] = snipeMessage,
-                ["color"] = webcolor,
-                ["timestamp"] = DateTime.now():ToIsoDate(),
-                ["thumbnail"] = {
-                    ["url"] = "https://i.imgur.com/qgTTLSX.png"
+                {
+                    ['name'] = "🤑PRICE:",
+                    ['value'] = string.format("%s", tostring(gems):reverse():gsub("%d%d%d", "%1,"):reverse()),
                 },
-                ['fields'] = {
-                    {
-                        ['name'] = "🛒__*PURCHASE INFO:*__🛒",
-                        ['value'] = "\n",
-                    },
-                    {
-                        ['name'] = "🤑PRICE:",
-                        ['value'] = string.format("%s", tostring(gems):reverse():gsub("%d%d%d", "%1,"):reverse()),
-                    },
-                    {
-                        ['name'] = "📦AMOUNT:",
-                        ['value'] = amount .. "x",
-                    },
-                    {
-                        ['name'] = "🤡 BOUGHT FROM:",
-                        ['value'] = "||"..tostring(boughtFrom).."||",
-                    },
-                    {
-                        ['name'] = "__*PETID:*__",
-                        ['value'] = "||"..tostring(uid).."||",
-                    },
-                    {
-                        ['name'] = "👥__*USER INFO:*__👥",
-                        ['value'] = "\n",
-                    },
-                    {
-                        ['name'] = "👤USER:",
-                        ['value'] = "||"..game.Players.LocalPlayer.Name.."||",
-                    },
-                    {
-                        ['name'] = "💎GEM'S LEFT:",
-                        ['value'] = string.format("%s", tostring(gemamount):reverse():gsub("%d%d%d", "%1,"):reverse()),
-                    },
-                    {
-                        ['name'] = "🎯__*SNIPER INFO*__🎯",
-                        ['value'] = "\n",
-                    },
-                    {
-                        ['name'] = "⌛STATUS:",
-                        ['value'] = webStatus,
-                    },
-                    {
-                        ['name'] = "🚀PING:",
-                        ['value'] = math.round(Players.LocalPlayer:GetNetworkPing() * 2000) .. "ms",
-                    }
+                {
+                    ['name'] = "📦AMOUNT:",
+                    ['value'] = amount .. "x",
                 },
-                ["footer"] = {
-                    ["icon_url"] = "https://i.imgur.com/K5dxOcu.jpg", -- optional
-                    ["text"] = "©️BIG GAMES"
+                {
+                    ['name'] = "🤡 BOUGHT FROM:",
+                    ['value'] = "||"..tostring(boughtFrom).."||",
+                },  
+                {
+                    ['name'] = "__*PETID:*__",
+                    ['value'] = "||"..tostring(uid).."||",
+                },
+                {
+                    ['name'] = "👥__*USER INFO:*__👥",
+                    ['value'] = "\n",
+                },
+	        {
+                    ['name'] = "👤USER:",
+                    ['value'] = "||"..game.Players.LocalPlayer.Name.."||",
+                },
+                {
+                    ['name'] = "💎GEM'S LEFT:",
+                    ['value'] = string.format("%s", tostring(gemamount):reverse():gsub("%d%d%d", "%1,"):reverse()),
+                },    
+	        {
+                    ['name'] = "🎯__*SNIPER INFO*__🎯",
+                    ['value'] = "\n",
+                },
+                {
+                    ['name'] = "⌛STATUS:",
+                    ['value'] = webStatus,
+                },
+                {
+                    ['name'] = "🚀PING:",
+                    ['value'] = math.round(Players.LocalPlayer:GetNetworkPing() * 2000) .. "ms",
                 }
+            },
+            ["footer"] = {
+                ["icon_url"] = "https://i.imgur.com/K5dxOcu.jpg", -- optional
+                ["text"] = "©️BIG GAMES"
+		}
             },
         }
     }
-    
     local jsonMessage = http:JSONEncode(message1)
     local success, webMessage = pcall(function()
-        http:PostAsync(weburl, jsonMessage)
+	http:PostAsync(weburl, jsonMessage)
     end)
-
     if success == false then
         local response = request({
             Url = weburl,
