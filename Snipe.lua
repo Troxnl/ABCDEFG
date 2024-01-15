@@ -219,7 +219,7 @@ if string.find(item, "Huge") and unitGems <= 2000000 then
                 elseif item == "Crystal Key Lower Half" and unitGems <= 3500 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
-                elseif item == "Crystal Key Upper Half" and unitGems <= 25000 then
+                elseif item == "Crystal Key Upper Half" and unitGems <= 31000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
                 elseif item == "Spinny Wheel Ticket" and unitGems <= 10000 then
