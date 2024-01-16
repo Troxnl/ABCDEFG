@@ -1,7 +1,9 @@
 local osclock = os.clock()
-repeat task.wait() until game:IsLoaded()
-
-setfpscap(8)
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+task.wait(15)
+game.Players.LocalPlayer.PlayerScripts.Scripts.Core["Idle Tracking"].Enabled = false
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
 local Players = game:GetService('Players')
@@ -10,26 +12,146 @@ local PlayerInServer = #getPlayers
 local http = game:GetService("HttpService")
 local ts = game:GetService("TeleportService")
 local rs = game:GetService("ReplicatedStorage")
-local Library = require(rs:WaitForChild('Library'))
-local snipeNormal
-
-if not snipeNormalPets then
+local snipeNormal, signal
+local Library = require(rs:WaitForChild("Library"))
+if snipeNormalPets == nil then
     snipeNormalPets = false
 end
-
 local vu = game:GetService("VirtualUser")
 Players.LocalPlayer.Idled:connect(function()
    vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
    task.wait(1)
    vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
 end)
-
+local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, class, failMessage, snipeNormal)
+    local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
+    local snipeMessage ="||".. Players.LocalPlayer.Name .. "||"
+    local weburl, webContent, webcolor, webStatus
+    local versionVal = { [1] = "Golden ", [2] = "Rainbow " }
+    local versionStr = versionVal[version] or (version == nil and "")
+    local mention = ( class == "Pet" and (Library.Directory.Pets[item].huge or Library.Directory.Pets[item].titanic)) and "<@" .. userid .. ">" or ""
+	
+    if boughtStatus then
+	webcolor = tonumber(0x00ff00)
+        snipeMessage = snipeMessage .. " ✅ ".. amount .."x "
+        webContent = mention
+	webStatus = "Success!"
+	weburl = webhook
+	if snipeNormal == true then
+	    weburl = normalwebhook
+	    snipeNormal = false
+	end
+    else
+	webcolor = tonumber(0xff0000)
+	weburl = webhookFail
+	webStatus = failMessage
+	snipeMessage = snipeMessage .. " ⛔️ ".. amount .."x "
+	if snipeNormal == true then
+	    snipeNormal = false
+	end
+    end
+	
+    snipeMessage = snipeMessage .. "**" .. versionStr
+    
+    if shiny then
+        snipeMessage = snipeMessage .. " Shiny "
+    end
+    
+    snipeMessage = snipeMessage .. item .. "**"
+    
+local message1 = {
+    ['content'] = webContent,
+    ['embeds'] = {
+        {
+            ["author"] = {
+                ["name"] = "🌟2FA's Boothsniper🌟",
+                ["icon_url"] = "https://i.imgur.com/K5dxOcu.jpg",
+            },
+            ['title'] = snipeMessage,
+            ["color"] = webcolor,
+            ["timestamp"] = DateTime.now():ToIsoDate(),
+            ["thumbnail"] = {
+            ["url"] = "https://i.imgur.com/qgTTLSX.png"
+        },
+            ['fields'] = {
+		{
+                    ['name'] = "🛒__*PURCHASE INFO:*__🛒",
+                    ['value'] = "\n",
+                },
+                {
+                    ['name'] = "🤑PRICE:",
+                    ['value'] = string.format("%s", tostring(gems):reverse():gsub("%d%d%d", "%1,"):reverse()),
+                },
+                {
+                    ['name'] = "📦AMOUNT:",
+                    ['value'] = amount .. "x",
+                },
+                {
+                    ['name'] = "🤡 BOUGHT FROM:",
+                    ['value'] = "||"..tostring(boughtFrom).."||",
+                },  
+                {
+                    ['name'] = "__*PETID:*__",
+                    ['value'] = "||"..tostring(uid).."||",
+                },
+                {
+                    ['name'] = "👥__*USER INFO:*__👥",
+                    ['value'] = "\n",
+                },
+	        {
+                    ['name'] = "👤USER:",
+                    ['value'] = "||"..game.Players.LocalPlayer.Name.."||",
+                },
+                {
+                    ['name'] = "💎GEM'S LEFT:",
+                    ['value'] = string.format("%s", tostring(gemamount):reverse():gsub("%d%d%d", "%1,"):reverse()),
+                },    
+	        {
+                    ['name'] = "🎯__*SNIPER INFO*__🎯",
+                    ['value'] = "\n",
+                },
+                {
+                    ['name'] = "⌛STATUS:",
+                    ['value'] = webStatus,
+                },
+                {
+                    ['name'] = "🚀PING:",
+                    ['value'] = math.round(Players.LocalPlayer:GetNetworkPing() * 2000) .. "ms",
+                }
+            },
+            ["footer"] = {
+                ["icon_url"] = "https://i.imgur.com/K5dxOcu.jpg", -- optional
+                ["text"] = "©️BIG GAMES"
+		}
+            },
+        }
+    }
+    local jsonMessage = http:JSONEncode(message1)
+    local success, webMessage = pcall(function()
+	http:PostAsync(weburl, jsonMessage)
+    end)
+    if success == false then
+        local response = request({
+            Url = weburl,
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
+            Body = jsonMessage
+        })
+    end
+end
 
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
-    if buytimestamp > listTimestamp then
-      task.wait(3.01 - Players.LocalPlayer:GetNetworkPing())
-    end
-    local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    signal = game:GetService("RunService").Heartbeat:Connect(function()
+	if buytimestamp < workspace:GetServerTimeNow() then
+	    signal:Disconnect()
+	    signal = nil
+        end
+    end)
+    repeat task.wait() until signal == nil
+    local boughtPet, boughtMessage = rs.Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
 end
 
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
@@ -61,7 +183,7 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
                 local class = tostring(listing["ItemData"]["class"])
                 local unitGems = gems/amount
 		snipeNormal = false
-                                 
+				
 if string.find(item, "Huge") and unitGems <= 2000000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
@@ -194,12 +316,11 @@ if string.find(item, "Huge") and unitGems <= 2000000 then
             end
         end
     end)
-
 local function jumpToServer() 
     local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true" 
     local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 50) }) 
     local body = http:JSONDecode(req.Body) 
-    local deep = math.random(1, 5)
+    local deep = math.random(1, 3)
     if deep > 1 then 
         for i = 1, deep, 1 do 
              req = request({ Url = string.format(sfUrl .. "&cursor=" .. body.nextPageCursor, 15502339080, "Desc", 50) }) 
@@ -221,19 +342,44 @@ local function jumpToServer()
     end
     ts:TeleportToPlaceInstance(15502339080, servers[math.random(1, randomCount)], game:GetService("Players").LocalPlayer) 
 end
-
-if PlayerInServer < 25 then
-    while task.wait(1) do
+if PlayerInServer < 30 then
+    while task.wait(10) do
 	jumpToServer()
     end
 end
-
+for i = 1, PlayerInServer do
+   for ii = 1,#alts do
+        if getPlayers[i].Name == alts[ii] and alts[ii] ~= Players.LocalPlayer.Name then
+            while task.wait(10) do
+		jumpToServer()
+	    end
+        end
+    end
+end
 Players.PlayerRemoving:Connect(function(player)
     getPlayers = Players:GetPlayers()
     PlayerInServer = #getPlayers
-    if PlayerInServer < 25 then
-        while task.wait(1) do
+    if PlayerInServer < 20 then
+        while task.wait(10) do
 	    jumpToServer()
 	end
     end
-end)
+end) 
+Players.PlayerAdded:Connect(function(player)
+    for i = 1,#alts do
+        if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
+	    task.wait(math.random(0, 60))
+            while task.wait(10) do
+	        jumpToServer()
+	    end
+        end
+    end
+end) 
+local hopDelay = math.random(720, 1000)
+while task.wait(1) do
+    if math.floor(os.clock() - osclock) >= hopDelay then
+        while task.wait(10) do
+	    jumpToServer()		
+	end	
+    end
+end
