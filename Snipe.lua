@@ -1,8 +1,7 @@
 local osclock = os.clock()
-if not game:IsLoaded() then
-    game.Loaded:Wait()
-end
-task.wait(15)
+repeat task.wait() until game:IsLoaded()
+
+setfpscap(8)
 game.Players.LocalPlayer.PlayerScripts.Scripts.Core["Idle Tracking"].Enabled = false
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
@@ -143,15 +142,10 @@ local message1 = {
 end
 
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
-    signal = game:GetService("RunService").Heartbeat:Connect(function()
-	if buytimestamp < workspace:GetServerTimeNow() then
-	    signal:Disconnect()
-	    signal = nil
-        end
-    end)
-    repeat task.wait() until signal == nil
-    local boughtPet, boughtMessage = rs.Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-    processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
+    if buytimestamp > listTimestamp then
+      task.wait(3.01 - Players.LocalPlayer:GetNetworkPing())
+    end
+    local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
 end
 
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
@@ -316,11 +310,12 @@ if string.find(item, "Huge") and unitGems <= 2000000 then
             end
         end
     end)
+
 local function jumpToServer() 
     local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true" 
     local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 50) }) 
     local body = http:JSONDecode(req.Body) 
-    local deep = math.random(1, 3)
+    local deep = math.random(1, 5)
     if deep > 1 then 
         for i = 1, deep, 1 do 
              req = request({ Url = string.format(sfUrl .. "&cursor=" .. body.nextPageCursor, 15502339080, "Desc", 50) }) 
@@ -342,8 +337,8 @@ local function jumpToServer()
     end
     ts:TeleportToPlaceInstance(15502339080, servers[math.random(1, randomCount)], game:GetService("Players").LocalPlayer) 
 end
-if PlayerInServer < 30 then
-    while task.wait(10) do
+if PlayerInServer < 25 then
+    while task.wait(1) do
 	jumpToServer()
     end
 end
@@ -359,8 +354,8 @@ end
 Players.PlayerRemoving:Connect(function(player)
     getPlayers = Players:GetPlayers()
     PlayerInServer = #getPlayers
-    if PlayerInServer < 20 then
-        while task.wait(10) do
+    if PlayerInServer < 25 then
+        while task.wait(1) do
 	    jumpToServer()
 	end
     end
