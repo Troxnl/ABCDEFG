@@ -315,75 +315,75 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
     end)
 
 local function jumpToServer() 
-    local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true" 
-    local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 50) }) 
-    local body = http:JSONDecode(req.Body) 
-    local deep = math.random(1, 5)
-    if deep > 1 then 
-        for i = 1, deep, 1 do 
-             req = request({ Url = string.format(sfUrl .. "&cursor=" .. body.nextPageCursor, 15502339080, "Desc", 50) }) 
-             body = http:JSONDecode(req.Body) 
-             task.wait(0.1)
-        end 
+local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true" 
+local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 50) }) 
+local body = http:JSONDecode(req.Body) 
+local deep = math.random(1, 3)
+if deep > 1 then 
+    for i = 1, deep, 1 do 
+         req = request({ Url = string.format(sfUrl .. "&cursor=" .. body.nextPageCursor, 15502339080, "Desc", 50) }) 
+         body = http:JSONDecode(req.Body) 
+         task.wait(0.1)
     end 
-    local servers = {} 
-    if body and body.data then 
-        for i, v in next, body.data do 
-            if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing < v.maxPlayers and v.id ~= game.JobId then
-                table.insert(servers, v.id)
-            end
+end 
+local servers = {} 
+if body and body.data then 
+    for i, v in next, body.data do 
+        if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing < v.maxPlayers and v.id ~= game.JobId then
+            table.insert(servers, v.id)
         end
     end
-    local randomCount = #servers
-    if not randomCount then
-       randomCount = 2
-    end
-    ts:TeleportToPlaceInstance(15502339080, servers[math.random(1, randomCount)], game:GetService("Players").LocalPlayer) 
+end
+local randomCount = #servers
+if not randomCount then
+   randomCount = 2
+end
+ts:TeleportToPlaceInstance(15502339080, servers[math.random(1, randomCount)], game:GetService("Players").LocalPlayer) 
 end
 
-if PlayerInServer < 25 then
-    while task.wait(1) do
-	jumpToServer()
-    end
+if PlayerInServer < 30 then
+while task.wait(10) do
+    jumpToServer()
+end
 end
 
 for i = 1, PlayerInServer do
-   for ii = 1,#alts do
-        if getPlayers[i].Name == alts[ii] and alts[ii] ~= Players.LocalPlayer.Name then
-            while task.wait(1) do
-		jumpToServer()
-	    end
+for ii = 1, #alts do
+    if getPlayers[i].Name == alts[ii] and alts[ii] ~= Players.LocalPlayer.Name then
+        while task.wait(10) do
+            jumpToServer()
         end
     end
 end
+end
 
 Players.PlayerRemoving:Connect(function(player)
-    getPlayers = Players:GetPlayers()
-    PlayerInServer = #getPlayers
-    if PlayerInServer < 25 then
-        while task.wait(1) do
-	    jumpToServer()
-	end
+getPlayers = Players:GetPlayers()
+PlayerInServer = #getPlayers
+if PlayerInServer < 20 then
+    while task.wait(10) do
+        jumpToServer()
     end
+end
 end) 
 
 Players.PlayerAdded:Connect(function(player)
-    for i = 1,#alts do
-        if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
-	    task.wait(math.random(0, 60))
-            while task.wait(1) do
-	        jumpToServer()
-	    end
+for i = 1, #alts do
+    if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
+        task.wait(math.random(0, 60))
+        while task.wait(10) do
+            jumpToServer()
         end
     end
+end
 end) 
 
-local hopDelay = math.random(900, 1200)
+local hopDelay = math.random(720, 1000)
 
 while task.wait(1) do
-    if math.floor(os.clock() - osclock) >= hopDelay then
-        while task.wait(1) do
-	    jumpToServer()		
-	end	
-    end
+if math.floor(os.clock() - osclock) >= hopDelay then
+    while task.wait(10) do
+        jumpToServer()      
+    end    
+end
 end
