@@ -3,8 +3,9 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-task.wait(10)
+task.wait(15)
 setfpscap(10)
+game.Players.LocalPlayer.PlayerScripts.Scripts.Core["Idle Tracking"].Enabled = false
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
 local Players = game:GetService('Players')
