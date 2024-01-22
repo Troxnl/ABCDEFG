@@ -3,6 +3,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
+task.wait(10)
 setfpscap(10)
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
