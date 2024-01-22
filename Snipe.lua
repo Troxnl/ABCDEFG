@@ -1,5 +1,7 @@
 local osclock = os.clock()
-repeat task.wait() until game:IsLoaded()
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
 
 setfpscap(10)
 game:GetService("RunService"):Set3dRenderingEnabled(false)
